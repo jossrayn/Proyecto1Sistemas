@@ -75,6 +75,7 @@ public class main extends javax.swing.JFrame {
         panelFiles = new javax.swing.JScrollPane();
         fileTable = new javax.swing.JTable();
         lblFiles = new javax.swing.JLabel();
+        btnBack = new javax.swing.JButton();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -408,6 +409,14 @@ public class main extends javax.swing.JFrame {
         lblFiles.setText("Files");
         getContentPane().add(lblFiles, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 70, 20));
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(1480, 480, -1, -1));
+
         background.setBackground(new java.awt.Color(0, 0, 0));
         background.setForeground(new java.awt.Color(255, 255, 255));
         background.setOpaque(true);
@@ -483,6 +492,13 @@ public class main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtLoadMouseClicked
 
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        config window = new config();
+        window.setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -522,6 +538,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JTable PBCTable;
     private javax.swing.JPanel PanelPBC;
     private javax.swing.JLabel background;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnExecute;
     private javax.swing.JButton btnLoadFile;
     private javax.swing.JScrollPane console;

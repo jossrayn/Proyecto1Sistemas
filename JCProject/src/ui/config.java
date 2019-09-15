@@ -93,6 +93,11 @@ public class config extends javax.swing.JFrame {
 
         btnStart.setText("Start");
         btnStart.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 153, 153), null));
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 400, 50));
 
         background.setBackground(new java.awt.Color(0, 0, 0));
@@ -101,6 +106,13 @@ public class config extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        // TODO add your handling code here:
+        main window = new main();
+        window.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnStartActionPerformed
 
     /**
      * @param args the command line arguments
