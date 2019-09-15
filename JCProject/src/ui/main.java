@@ -9,12 +9,15 @@ import java.awt.Dimension;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import model.FileManager;
 
 /**
  *
@@ -24,7 +27,7 @@ public class main extends javax.swing.JFrame {
     private int panellocationY = 30;
     private int panelSize = 250;
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("Asm files", "asm");//define el formato de archivo que se permite cargar en el file chooser
-    private ArrayList<String> fileList = new ArrayList<String>();
+    private ArrayList<File> fileList = new ArrayList<File>();
     /**
      * Creates new form main
      */
@@ -43,16 +46,17 @@ public class main extends javax.swing.JFrame {
 
         console = new javax.swing.JScrollPane();
         txtConsole = new javax.swing.JTextArea();
-        PanelBpc = new javax.swing.JPanel();
+        PanelPBC = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        PBCTable = new javax.swing.JTable();
         lblBPC = new javax.swing.JLabel();
         panelDisk = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         panelMemory = new javax.swing.JPanel();
         memoryTable = new javax.swing.JScrollPane();
-        memory = new javax.swing.JTable();
+        instructionList = new javax.swing.JList<>();
+        lblMemory = new javax.swing.JLabel();
         panelWork1 = new javax.swing.JScrollPane();
         workTail1 = new javax.swing.JTable();
         panelWork2 = new javax.swing.JScrollPane();
@@ -92,63 +96,66 @@ public class main extends javax.swing.JFrame {
         txtConsole.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
         console.setViewportView(txtConsole);
 
-        getContentPane().add(console, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 450, 110));
+        getContentPane().add(console, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 450, 140));
 
-        PanelBpc.setBackground(new java.awt.Color(0, 0, 0));
+        PanelPBC.setBackground(new java.awt.Color(0, 0, 0));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        PBCTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "File", "PC", "IR", "AC", "State"
+                "File", "PC", "IR", "AC", "AX", "BX", "CX", "DX", "State"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
-            jTable2.getColumnModel().getColumn(4).setResizable(false);
+        PBCTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(PBCTable);
+        if (PBCTable.getColumnModel().getColumnCount() > 0) {
+            PBCTable.getColumnModel().getColumn(0).setResizable(false);
+            PBCTable.getColumnModel().getColumn(1).setResizable(false);
+            PBCTable.getColumnModel().getColumn(2).setResizable(false);
+            PBCTable.getColumnModel().getColumn(3).setResizable(false);
+            PBCTable.getColumnModel().getColumn(4).setResizable(false);
+            PBCTable.getColumnModel().getColumn(5).setResizable(false);
+            PBCTable.getColumnModel().getColumn(6).setResizable(false);
+            PBCTable.getColumnModel().getColumn(7).setResizable(false);
+            PBCTable.getColumnModel().getColumn(8).setResizable(false);
         }
 
         lblBPC.setForeground(new java.awt.Color(255, 255, 255));
-        lblBPC.setText("BPC-S");
+        lblBPC.setText("BPC'S");
 
-        javax.swing.GroupLayout PanelBpcLayout = new javax.swing.GroupLayout(PanelBpc);
-        PanelBpc.setLayout(PanelBpcLayout);
-        PanelBpcLayout.setHorizontalGroup(
-            PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelBpcLayout.createSequentialGroup()
-                .addGroup(PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBPC, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 1, Short.MAX_VALUE))
+        javax.swing.GroupLayout PanelPBCLayout = new javax.swing.GroupLayout(PanelPBC);
+        PanelPBC.setLayout(PanelPBCLayout);
+        PanelPBCLayout.setHorizontalGroup(
+            PanelPBCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelPBCLayout.createSequentialGroup()
+                .addComponent(lblBPC, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
         );
-        PanelBpcLayout.setVerticalGroup(
-            PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelBpcLayout.createSequentialGroup()
+        PanelPBCLayout.setVerticalGroup(
+            PanelPBCLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelPBCLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblBPC, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(PanelBpc, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 440, 230));
+        getContentPane().add(PanelPBC, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 440, 230));
 
         panelDisk.setBackground(new java.awt.Color(0, 0, 0));
         panelDisk.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
@@ -199,57 +206,24 @@ public class main extends javax.swing.JFrame {
         memoryTable.setBackground(new java.awt.Color(0, 0, 0));
         memoryTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        memory.setBackground(new java.awt.Color(0, 0, 0));
-        memory.setForeground(new java.awt.Color(255, 255, 255));
-        memory.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Memory"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        memoryTable.setViewportView(memory);
-        if (memory.getColumnModel().getColumnCount() > 0) {
-            memory.getColumnModel().getColumn(0).setResizable(false);
-        }
+        memoryTable.setViewportView(instructionList);
 
         javax.swing.GroupLayout panelMemoryLayout = new javax.swing.GroupLayout(panelMemory);
         panelMemory.setLayout(panelMemoryLayout);
         panelMemoryLayout.setHorizontalGroup(
             panelMemoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(memoryTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+            .addComponent(memoryTable, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
         );
         panelMemoryLayout.setVerticalGroup(
             panelMemoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMemoryLayout.createSequentialGroup()
-                .addComponent(memoryTable, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(memoryTable, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
         );
 
-        getContentPane().add(panelMemory, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 20, 460, 270));
+        getContentPane().add(panelMemory, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 40, 460, 270));
+
+        lblMemory.setForeground(new java.awt.Color(255, 255, 255));
+        lblMemory.setText("Memory");
+        getContentPane().add(lblMemory, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 20, 110, -1));
 
         workTail1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -379,7 +353,7 @@ public class main extends javax.swing.JFrame {
                 txtLoadMouseClicked(evt);
             }
         });
-        getContentPane().add(txtLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 420, -1));
+        getContentPane().add(txtLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 440, -1));
 
         btnLoadFile.setBackground(new java.awt.Color(204, 204, 204));
         btnLoadFile.setText("Load");
@@ -388,10 +362,10 @@ public class main extends javax.swing.JFrame {
                 btnLoadFileActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLoadFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 200, -1));
+        getContentPane().add(btnLoadFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 210, -1));
 
         btnExecute.setText("Execute");
-        getContentPane().add(btnExecute, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 470, 210, -1));
+        getContentPane().add(btnExecute, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 470, 220, -1));
 
         lblConsole.setForeground(new java.awt.Color(255, 255, 255));
         lblConsole.setText("Console");
@@ -469,15 +443,25 @@ public class main extends javax.swing.JFrame {
             String [][] none={};
             String titles[] = {"Number","File Name"};
             DefaultTableModel model = new DefaultTableModel(none,titles);
-            String file[] = txtLoad.getText().split(",");
+            String files[] = txtLoad.getText().split(",");
             for (int i = 0;i<fileList.size();i++){
                     ArrayList<String> array = new ArrayList<String>();
                     array.add(Integer.toString(i+1));
-                    array.add(file[i]);
+                    array.add(files[i]);
                     model.addRow(array.toArray());
             }
             fileTable.setModel(model);
             txtLoad.setText("Load File");
+            
+            DefaultListModel<String> modelMemory = new DefaultListModel<>();
+            for (File file:fileList){
+                FileManager manager = new FileManager();
+                ArrayList<String> instructions = manager.read(file.toPath());//lectura del archivo cargado
+                for (String ins:instructions){
+                    modelMemory.addElement(file.getName() + " " + ins);
+                }
+            }
+            instructionList.setModel(modelMemory);
         }
             
     }//GEN-LAST:event_btnLoadFileActionPerformed
@@ -492,7 +476,7 @@ public class main extends javax.swing.JFrame {
         if (option == JFileChooser.APPROVE_OPTION){
             File selected[] = file.getSelectedFiles();
             for(File fileSelected:selected){
-                fileList.add(fileSelected.toString());
+                fileList.add(fileSelected);
                 txtLoad.setText(txtLoad.getText() + "," + fileSelected.getName());
             }
             
@@ -535,23 +519,24 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel PanelBpc;
+    private javax.swing.JTable PBCTable;
+    private javax.swing.JPanel PanelPBC;
     private javax.swing.JLabel background;
     private javax.swing.JButton btnExecute;
     private javax.swing.JButton btnLoadFile;
     private javax.swing.JScrollPane console;
     private javax.swing.JTable fileTable;
+    private javax.swing.JList<String> instructionList;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblBPC;
     private javax.swing.JLabel lblConsole;
     private javax.swing.JLabel lblDisk;
     private javax.swing.JLabel lblFiles;
-    private javax.swing.JTable memory;
+    private javax.swing.JLabel lblMemory;
     private javax.swing.JScrollPane memoryTable;
     private javax.swing.JTable n1Table;
     private javax.swing.JTable n1Table1;
