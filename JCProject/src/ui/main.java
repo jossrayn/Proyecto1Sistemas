@@ -24,7 +24,6 @@ public class main extends javax.swing.JFrame {
     private int panellocationY = 30;
     private int panelSize = 250;
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("Asm files", "asm");//define el formato de archivo que se permite cargar en el file chooser
-    private Path path;
     private ArrayList<String> fileList = new ArrayList<String>();
     /**
      * Creates new form main
@@ -45,7 +44,9 @@ public class main extends javax.swing.JFrame {
         console = new javax.swing.JScrollPane();
         txtConsole = new javax.swing.JTextArea();
         PanelBpc = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        lblBPC = new javax.swing.JLabel();
         panelDisk = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -69,6 +70,7 @@ public class main extends javax.swing.JFrame {
         lblDisk = new javax.swing.JLabel();
         panelFiles = new javax.swing.JScrollPane();
         fileTable = new javax.swing.JTable();
+        lblFiles = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -94,27 +96,59 @@ public class main extends javax.swing.JFrame {
 
         PanelBpc.setBackground(new java.awt.Color(0, 0, 0));
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("BPC'S");
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "File", "PC", "IR", "AC", "State"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(1).setResizable(false);
+            jTable2.getColumnModel().getColumn(2).setResizable(false);
+            jTable2.getColumnModel().getColumn(3).setResizable(false);
+            jTable2.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        lblBPC.setForeground(new java.awt.Color(255, 255, 255));
+        lblBPC.setText("BPC-S");
 
         javax.swing.GroupLayout PanelBpcLayout = new javax.swing.GroupLayout(PanelBpc);
         PanelBpc.setLayout(PanelBpcLayout);
         PanelBpcLayout.setHorizontalGroup(
             PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelBpcLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addGroup(PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBPC, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 1, Short.MAX_VALUE))
         );
         PanelBpcLayout.setVerticalGroup(
             PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelBpcLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addComponent(lblBPC, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(PanelBpc, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 450, 250));
+        getContentPane().add(PanelBpc, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 440, 230));
 
         panelDisk.setBackground(new java.awt.Color(0, 0, 0));
         panelDisk.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
@@ -396,6 +430,10 @@ public class main extends javax.swing.JFrame {
 
         getContentPane().add(panelFiles, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 280, 250, 210));
 
+        lblFiles.setForeground(new java.awt.Color(255, 255, 255));
+        lblFiles.setText("Files");
+        getContentPane().add(lblFiles, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 70, 20));
+
         background.setBackground(new java.awt.Color(0, 0, 0));
         background.setForeground(new java.awt.Color(255, 255, 255));
         background.setOpaque(true);
@@ -410,15 +448,15 @@ public class main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Select a file firts");
         }
         else{
-            Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3" },
-            { "Row2-Column1", "Row2-Column2", "Row2-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" }
-            ,{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },};
+            //generando nueva tabla del BPC
+            /*
+            Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row1-Column4", "Row1-Column5"}};
             Object columnNames[] = {"File","PC", "IR", "AC", "State" };
             JTable table = new JTable(rowData, columnNames);
 
             JScrollPane scrollPane = new JScrollPane(table);
             scrollPane.setSize(452,404);
-            scrollPane.setLocation(0,panellocationY);
+            scrollPane.setLocation(0,30);
             PanelBpc.add(scrollPane);
             PanelBpc.setPreferredSize(new Dimension(450, panelSize));
             PanelBpc.validate();
@@ -426,7 +464,8 @@ public class main extends javax.swing.JFrame {
             panellocationY+=160;
             panelSize+=160;
             jScrollPane1.revalidate();
-
+            */
+            
             String [][] none={};
             String titles[] = {"Number","File Name"};
             DefaultTableModel model = new DefaultTableModel(none,titles);
@@ -502,13 +541,16 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JButton btnLoadFile;
     private javax.swing.JScrollPane console;
     private javax.swing.JTable fileTable;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JLabel lblBPC;
     private javax.swing.JLabel lblConsole;
     private javax.swing.JLabel lblDisk;
+    private javax.swing.JLabel lblFiles;
     private javax.swing.JTable memory;
     private javax.swing.JScrollPane memoryTable;
     private javax.swing.JTable n1Table;
