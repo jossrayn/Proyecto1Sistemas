@@ -5,12 +5,17 @@
  */
 package ui;
 
+import java.awt.Dimension;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
 /**
  *
  * @author rayn0
  */
 public class main extends javax.swing.JFrame {
-
+    private int panellocationY = 0;
+    private int panelSize = 250;
     /**
      * Creates new form main
      */
@@ -28,10 +33,31 @@ public class main extends javax.swing.JFrame {
     private void initComponents() {
 
         console = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        txtConsole = new javax.swing.JTextArea();
+        PanelBpc = new javax.swing.JPanel();
+        panelBpc1 = new javax.swing.JScrollPane();
+        BPC1 = new javax.swing.JTable();
+        panelBpc2 = new javax.swing.JScrollPane();
+        BPC2 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        panelDisk = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        panelMemory = new javax.swing.JPanel();
+        memoryTable = new javax.swing.JScrollPane();
+        memory = new javax.swing.JTable();
+        panelWork1 = new javax.swing.JScrollPane();
+        workTail1 = new javax.swing.JTable();
+        panelWork2 = new javax.swing.JScrollPane();
+        workTail2 = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        panelN1 = new javax.swing.JScrollPane();
+        n1Table = new javax.swing.JTable();
+        panelN2 = new javax.swing.JScrollPane();
+        n1Table1 = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        txtLoad = new javax.swing.JTextField();
+        btnLoadFile = new javax.swing.JButton();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -40,24 +66,24 @@ public class main extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         console.setBackground(new java.awt.Color(255, 255, 255));
-        console.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        console.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         console.setForeground(new java.awt.Color(0, 255, 204));
         console.setViewportBorder(javax.swing.BorderFactory.createCompoundBorder());
         console.setAutoscrolls(true);
 
-        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(0, 255, 0));
-        jTextArea1.setRows(5);
-        jTextArea1.setText(">");
-        jTextArea1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(51, 255, 0)));
-        console.setViewportView(jTextArea1);
+        txtConsole.setBackground(new java.awt.Color(0, 0, 0));
+        txtConsole.setColumns(20);
+        txtConsole.setForeground(new java.awt.Color(153, 153, 153));
+        txtConsole.setRows(5);
+        txtConsole.setText(">");
+        txtConsole.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        console.setViewportView(txtConsole);
 
-        getContentPane().add(console, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 622, 175));
+        getContentPane().add(console, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 450, 120));
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        PanelBpc.setBackground(new java.awt.Color(0, 0, 0));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        BPC1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null}
@@ -65,35 +91,321 @@ public class main extends javax.swing.JFrame {
             new String [] {
                 "PC", "IR", "AC"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        panelBpc1.setViewportView(BPC1);
+        if (BPC1.getColumnModel().getColumnCount() > 0) {
+            BPC1.getColumnModel().getColumn(0).setResizable(false);
+            BPC1.getColumnModel().getColumn(1).setResizable(false);
+            BPC1.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        BPC2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "PC", "IR", "AC"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        panelBpc2.setViewportView(BPC2);
+        if (BPC2.getColumnModel().getColumnCount() > 0) {
+            BPC2.getColumnModel().getColumn(0).setResizable(false);
+            BPC2.getColumnModel().getColumn(1).setResizable(false);
+            BPC2.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("BPC'S");
+
+        javax.swing.GroupLayout PanelBpcLayout = new javax.swing.GroupLayout(PanelBpc);
+        PanelBpc.setLayout(PanelBpcLayout);
+        PanelBpcLayout.setHorizontalGroup(
+            PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelBpcLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelBpc2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                    .addComponent(panelBpc1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(PanelBpcLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        PanelBpcLayout.setVerticalGroup(
+            PanelBpcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelBpcLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelBpc1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelBpc2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(68, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(PanelBpc, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 450, 250));
+
+        panelDisk.setBackground(new java.awt.Color(0, 0, 0));
+        panelDisk.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setEnabled(false);
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
+            jTable1.getColumnModel().getColumn(3).setResizable(false);
+        }
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
+        javax.swing.GroupLayout panelDiskLayout = new javax.swing.GroupLayout(panelDisk);
+        panelDisk.setLayout(panelDiskLayout);
+        panelDiskLayout.setHorizontalGroup(
+            panelDiskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+        panelDiskLayout.setVerticalGroup(
+            panelDiskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 610, 320));
+        getContentPane().add(panelDisk, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 570, 260));
+
+        panelMemory.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+
+        memoryTable.setBackground(new java.awt.Color(0, 0, 0));
+        memoryTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+
+        memory.setBackground(new java.awt.Color(0, 0, 0));
+        memory.setForeground(new java.awt.Color(255, 255, 255));
+        memory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Memory"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        memoryTable.setViewportView(memory);
+        if (memory.getColumnModel().getColumnCount() > 0) {
+            memory.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        javax.swing.GroupLayout panelMemoryLayout = new javax.swing.GroupLayout(panelMemory);
+        panelMemory.setLayout(panelMemoryLayout);
+        panelMemoryLayout.setHorizontalGroup(
+            panelMemoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(memoryTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+        );
+        panelMemoryLayout.setVerticalGroup(
+            panelMemoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(memoryTable, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(panelMemory, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 20, 460, 260));
+
+        workTail1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Instruction", "Value", "File"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        panelWork1.setViewportView(workTail1);
+        if (workTail1.getColumnModel().getColumnCount() > 0) {
+            workTail1.getColumnModel().getColumn(0).setResizable(false);
+            workTail1.getColumnModel().getColumn(1).setResizable(false);
+            workTail1.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        getContentPane().add(panelWork1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 370, 270, 130));
+
+        workTail2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Instruction", "Value", "File"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        panelWork2.setViewportView(workTail2);
+        if (workTail2.getColumnModel().getColumnCount() > 0) {
+            workTail2.getColumnModel().getColumn(0).setResizable(false);
+            workTail2.getColumnModel().getColumn(1).setResizable(false);
+            workTail2.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        getContentPane().add(panelWork2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 370, 270, 130));
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Work Queue's");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 340, 170, 20));
+
+        n1Table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "Core 2", "Ins", "Ins", "Ins"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        panelN1.setViewportView(n1Table);
+
+        getContentPane().add(panelN1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 430, -1, 40));
+
+        n1Table1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "Core 1", "Ins", "Ins", "Ins"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        panelN2.setViewportView(n1Table1);
+
+        getContentPane().add(panelN2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 370, -1, 40));
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Core's");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 350, -1, -1));
+
+        txtLoad.setEditable(false);
+        txtLoad.setText("Load File");
+        txtLoad.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        getContentPane().add(txtLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 420, -1));
+
+        btnLoadFile.setBackground(new java.awt.Color(204, 204, 204));
+        btnLoadFile.setText("Load");
+        btnLoadFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadFileActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLoadFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 470, 100, -1));
 
         background.setBackground(new java.awt.Color(0, 0, 0));
         background.setForeground(new java.awt.Color(255, 255, 255));
         background.setOpaque(true);
-        getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-110, -110, 1300, 710));
+        getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-60, -90, 1680, 820));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoadFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadFileActionPerformed
+        // TODO add your handling code here:
+        Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3" },
+        { "Row2-Column1", "Row2-Column2", "Row2-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" }
+        ,{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },{ "Row1-Column1", "Row1-Column2", "Row1-Column3" },};
+        Object columnNames[] = { "PC", "IR", "AC" };
+        JTable table = new JTable(rowData, columnNames);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setSize(452,404);
+        scrollPane.setLocation(0,panellocationY);
+        PanelBpc.add(scrollPane);
+        PanelBpc.setPreferredSize(new Dimension(450, panelSize));
+        PanelBpc.validate();
+        PanelBpc.repaint();
+        panellocationY+=160;
+        panelSize+=160;
+        jScrollPane1.revalidate();
+    }//GEN-LAST:event_btnLoadFileActionPerformed
 
     /**
      * @param args the command line arguments
@@ -131,11 +443,32 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable BPC1;
+    private javax.swing.JTable BPC2;
+    private javax.swing.JPanel PanelBpc;
     private javax.swing.JLabel background;
+    private javax.swing.JButton btnLoadFile;
     private javax.swing.JScrollPane console;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTable memory;
+    private javax.swing.JScrollPane memoryTable;
+    private javax.swing.JTable n1Table;
+    private javax.swing.JTable n1Table1;
+    private javax.swing.JScrollPane panelBpc1;
+    private javax.swing.JScrollPane panelBpc2;
+    private javax.swing.JPanel panelDisk;
+    private javax.swing.JPanel panelMemory;
+    private javax.swing.JScrollPane panelN1;
+    private javax.swing.JScrollPane panelN2;
+    private javax.swing.JScrollPane panelWork1;
+    private javax.swing.JScrollPane panelWork2;
+    private javax.swing.JTextArea txtConsole;
+    private javax.swing.JTextField txtLoad;
+    private javax.swing.JTable workTail1;
+    private javax.swing.JTable workTail2;
     // End of variables declaration//GEN-END:variables
 }
