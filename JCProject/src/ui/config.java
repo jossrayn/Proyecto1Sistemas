@@ -5,12 +5,14 @@
  */
 package ui;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author rayn0
  */
 public class config extends javax.swing.JFrame {
-
+    private ArrayList<Integer> config = new ArrayList<Integer>();
     /**
      * Creates new form config
      */
@@ -28,12 +30,12 @@ public class config extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        panelConfig = new javax.swing.JScrollPane();
+        configTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtDisk = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtMemory = new javax.swing.JTextField();
         btnStart = new javax.swing.JButton();
         background = new javax.swing.JLabel();
 
@@ -44,7 +46,7 @@ public class config extends javax.swing.JFrame {
         jLabel1.setText("Settings");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 50, 20));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        configTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"Load", "2"},
                 {"Store", "2"},
@@ -53,7 +55,7 @@ public class config extends javax.swing.JFrame {
                 {"Sub", "3"},
                 {"Inc", "1"},
                 {"Dec", "1"},
-                {"Int", "int"},
+                {"Int", "0"},
                 {"Jum", "2"},
                 {"Cmp", "2"},
                 {"Je/Jne", "2"},
@@ -72,24 +74,28 @@ public class config extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
+        configTable.getTableHeader().setReorderingAllowed(false);
+        panelConfig.setViewportView(configTable);
+        if (configTable.getColumnModel().getColumnCount() > 0) {
+            configTable.getColumnModel().getColumn(0).setResizable(false);
+            configTable.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 240));
+        getContentPane().add(panelConfig, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 240));
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Disk size:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 274, 70, 20));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 100, 20));
+
+        txtDisk.setText("1024");
+        getContentPane().add(txtDisk, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 100, 20));
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Memory Size:");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 100, 20));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 80, 20));
+
+        txtMemory.setText("128");
+        getContentPane().add(txtMemory, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 80, 20));
 
         btnStart.setText("Start");
         btnStart.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 153, 153), null));
@@ -109,7 +115,13 @@ public class config extends javax.swing.JFrame {
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         // TODO add your handling code here:
-        main window = new main();
+        for(int i = 0;i<configTable.getRowCount();i++){
+                int number = Integer.parseInt(configTable.getModel().getValueAt(i,1).toString());
+                config.add(number);
+        }
+        config.add(Integer.parseInt(txtDisk.getText()));
+        config.add(Integer.parseInt(txtMemory.getText()));
+        main window = new main(config);
         window.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnStartActionPerformed
@@ -152,12 +164,12 @@ public class config extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel background;
     private javax.swing.JButton btnStart;
+    private javax.swing.JTable configTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JScrollPane panelConfig;
+    private javax.swing.JTextField txtDisk;
+    private javax.swing.JTextField txtMemory;
     // End of variables declaration//GEN-END:variables
 }

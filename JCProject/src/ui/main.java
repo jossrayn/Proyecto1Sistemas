@@ -28,11 +28,22 @@ public class main extends javax.swing.JFrame {
     private int panelSize = 250;
     private FileNameExtensionFilter filter = new FileNameExtensionFilter("Asm files", "asm");//define el formato de archivo que se permite cargar en el file chooser
     private ArrayList<File> fileList = new ArrayList<File>();
+    private ArrayList<String> execute = new ArrayList<String>();
+    private ArrayList<Integer> config = new ArrayList<>();
     /**
      * Creates new form main
      */
-    public main() {
+    public main(ArrayList<Integer> config) {
         initComponents();
+        config = config;
+        instructionList.setSize(1, config.get(config.size()-1));
+        diskList.setSize(1, config.get(config.size()-2));
+        
+        
+    }
+
+    private main() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -51,8 +62,8 @@ public class main extends javax.swing.JFrame {
         PBCTable = new javax.swing.JTable();
         lblBPC = new javax.swing.JLabel();
         panelDisk = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        diskList = new javax.swing.JList<>();
         panelMemory = new javax.swing.JPanel();
         memoryTable = new javax.swing.JScrollPane();
         instructionList = new javax.swing.JList<>();
@@ -161,43 +172,17 @@ public class main extends javax.swing.JFrame {
         panelDisk.setBackground(new java.awt.Color(0, 0, 0));
         panelDisk.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-        }
+        jScrollPane3.setViewportView(diskList);
 
         javax.swing.GroupLayout panelDiskLayout = new javax.swing.GroupLayout(panelDisk);
         panelDisk.setLayout(panelDiskLayout);
         panelDiskLayout.setHorizontalGroup(
             panelDiskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
         );
         panelDiskLayout.setVerticalGroup(
             panelDiskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
         );
 
         getContentPane().add(panelDisk, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 40, 570, 180));
@@ -366,6 +351,11 @@ public class main extends javax.swing.JFrame {
         getContentPane().add(btnLoadFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 210, -1));
 
         btnExecute.setText("Execute");
+        btnExecute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExecuteActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnExecute, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 470, 220, -1));
 
         lblConsole.setForeground(new java.awt.Color(255, 255, 255));
@@ -461,16 +451,6 @@ public class main extends javax.swing.JFrame {
             }
             fileTable.setModel(model);
             txtLoad.setText("Load File");
-            
-            DefaultListModel<String> modelMemory = new DefaultListModel<>();
-            for (File file:fileList){
-                FileManager manager = new FileManager();
-                ArrayList<String> instructions = manager.read(file.toPath());//lectura del archivo cargado
-                for (String ins:instructions){
-                    modelMemory.addElement(file.getName() + " " + ins);
-                }
-            }
-            instructionList.setModel(modelMemory);
         }
             
     }//GEN-LAST:event_btnLoadFileActionPerformed
@@ -481,12 +461,16 @@ public class main extends javax.swing.JFrame {
         file.setFileFilter(filter);
         file.setMultiSelectionEnabled(true);
         int option = file.showOpenDialog(this);
-        
         if (option == JFileChooser.APPROVE_OPTION){
             File selected[] = file.getSelectedFiles();
             for(File fileSelected:selected){
                 fileList.add(fileSelected);
-                txtLoad.setText(txtLoad.getText() + "," + fileSelected.getName());
+                if(txtLoad.getText().equals("Load File")){
+                    txtLoad.setText(""+fileSelected.getName());
+                }
+                else{
+                    txtLoad.setText(txtLoad.getText() + "," +fileSelected.getName());
+                }
             }
             
         }
@@ -498,6 +482,37 @@ public class main extends javax.swing.JFrame {
         config window = new config();
         window.setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecuteActionPerformed
+        // TODO add your handling code here:
+         DefaultListModel<String> modelMemory = new DefaultListModel<>();
+            DefaultListModel<String> modelDisk = new DefaultListModel<>();
+            int memoryCounter = 0;
+            int diskCounter = 0;
+            int selectedRow[] = fileTable.getSelectedRows();
+            for(int name:selectedRow){
+                execute.add(fileTable.getModel().getValueAt(name,1).toString());
+            }
+            for (File file:fileList){
+                if (execute.contains(file.getName())){
+                    FileManager manager = new FileManager();
+                    ArrayList<String> instructions = manager.read(file.toPath());//lectura del archivo cargado
+                    for (String ins:instructions){
+                        if (memoryCounter < instructionList.size().height ){
+                            memoryCounter++;
+                            modelMemory.addElement( memoryCounter+ ". "+file.getName() + " " + ins);
+                            
+                        }
+                        else{
+                            modelDisk.addElement(file.getName() + " " + ins);
+                            memoryCounter++;
+                        }
+                    }
+                }
+            }
+            diskList.setModel(modelDisk);
+            instructionList.setModel(modelMemory);
+    }//GEN-LAST:event_btnExecuteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -542,13 +557,13 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JButton btnExecute;
     private javax.swing.JButton btnLoadFile;
     private javax.swing.JScrollPane console;
+    private javax.swing.JList<String> diskList;
     private javax.swing.JTable fileTable;
     private javax.swing.JList<String> instructionList;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblBPC;
     private javax.swing.JLabel lblConsole;
     private javax.swing.JLabel lblDisk;
