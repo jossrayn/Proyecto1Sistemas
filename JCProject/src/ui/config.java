@@ -6,13 +6,15 @@
 package ui;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import model.Instruction;
 
 /**
  *
  * @author rayn0
  */
 public class config extends javax.swing.JFrame {
-    private ArrayList<Integer> config = new ArrayList<Integer>();
+    private ArrayList<Instruction> config = new ArrayList<Instruction>();
     /**
      * Creates new form config
      */
@@ -40,12 +42,15 @@ public class config extends javax.swing.JFrame {
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Settings");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 50, 20));
 
+        configTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        configTable.setForeground(new java.awt.Color(255, 255, 255));
         configTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"Load", "2"},
@@ -55,7 +60,9 @@ public class config extends javax.swing.JFrame {
                 {"Sub", "3"},
                 {"Inc", "1"},
                 {"Dec", "1"},
-                {"Int", "0"},
+                {"Int 20H", "0"},
+                {"Int 16H", "0"},
+                {"Int 05H", "0"},
                 {"Jum", "2"},
                 {"Cmp", "2"},
                 {"Je/Jne", "2"},
@@ -74,6 +81,7 @@ public class config extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        configTable.setOpaque(false);
         configTable.getTableHeader().setReorderingAllowed(false);
         panelConfig.setViewportView(configTable);
         if (configTable.getColumnModel().getColumnCount() > 0) {
@@ -97,17 +105,16 @@ public class config extends javax.swing.JFrame {
         txtMemory.setText("128");
         getContentPane().add(txtMemory, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 80, 20));
 
+        btnStart.setForeground(new java.awt.Color(255, 255, 255));
         btnStart.setText("Start");
-        btnStart.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 153, 153), null));
+        btnStart.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        btnStart.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnStartActionPerformed(evt);
             }
         });
         getContentPane().add(btnStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 400, 50));
-
-        background.setBackground(new java.awt.Color(0, 0, 0));
-        background.setOpaque(true);
         getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, -6, 480, 400));
 
         pack();
@@ -117,13 +124,18 @@ public class config extends javax.swing.JFrame {
         // TODO add your handling code here:
         for(int i = 0;i<configTable.getRowCount();i++){
                 int number = Integer.parseInt(configTable.getModel().getValueAt(i,1).toString());
-                config.add(number);
+                Instruction ins = new Instruction(configTable.getModel().getValueAt(i,0).toString(),number);
+                config.add(ins);
         }
-        config.add(Integer.parseInt(txtDisk.getText()));
-        config.add(Integer.parseInt(txtMemory.getText()));
-        main window = new main(config);
-        window.setVisible(true);
-        this.setVisible(false);
+        if (Integer.parseInt(txtMemory.getText()) <= 128 && Integer.parseInt(txtDisk.getText()) <= 1024){
+            main window = new main(config,Integer.parseInt(txtMemory.getText()),Integer.parseInt(txtDisk.getText()));
+            window.setVisible(true);
+            this.setVisible(false);
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Check your memory or disk size settings. Out of range.");
+        }
+        
     }//GEN-LAST:event_btnStartActionPerformed
 
     /**

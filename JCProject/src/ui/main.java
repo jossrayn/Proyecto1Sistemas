@@ -5,19 +5,26 @@
  */
 package ui;
 
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 import java.awt.Dimension;
 import java.io.File;
 import java.nio.file.Path;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import model.FileManager;
+import model.Instruction;
 
 /**
  *
@@ -30,16 +37,18 @@ public class main extends javax.swing.JFrame {
     private ArrayList<File> fileList = new ArrayList<File>();
     private ArrayList<String> execute = new ArrayList<String>();
     private ArrayList<Integer> config = new ArrayList<>();
+    private DefaultListModel<String> modelMemory = new DefaultListModel<>();
+    private DefaultListModel<String> modelDisk = new DefaultListModel<>();
+    private int memorySize = 0;
+    private int diskSize = 0;
     /**
      * Creates new form main
      */
-    public main(ArrayList<Integer> config) {
+    public main(ArrayList<Instruction> config,int memSize,int sizeDisk) {
         initComponents();
         config = config;
-        instructionList.setSize(1, config.get(config.size()-1));
-        diskList.setSize(1, config.get(config.size()-2));
-        
-        
+        this.memorySize = memSize;
+        this.diskSize = sizeDisk;
     }
 
     private main() {
@@ -69,9 +78,9 @@ public class main extends javax.swing.JFrame {
         instructionList = new javax.swing.JList<>();
         lblMemory = new javax.swing.JLabel();
         panelWork1 = new javax.swing.JScrollPane();
-        workTail1 = new javax.swing.JTable();
+        workQueue1 = new javax.swing.JTable();
         panelWork2 = new javax.swing.JScrollPane();
-        workTail2 = new javax.swing.JTable();
+        workQueue = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         panelN1 = new javax.swing.JScrollPane();
         n1Table = new javax.swing.JTable();
@@ -90,27 +99,23 @@ public class main extends javax.swing.JFrame {
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(0, 0, 0));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         console.setBackground(new java.awt.Color(255, 255, 255));
         console.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
-        console.setForeground(new java.awt.Color(0, 255, 204));
         console.setViewportBorder(javax.swing.BorderFactory.createCompoundBorder());
         console.setAutoscrolls(true);
 
-        txtConsole.setBackground(new java.awt.Color(0, 0, 0));
         txtConsole.setColumns(20);
         txtConsole.setForeground(new java.awt.Color(153, 153, 153));
         txtConsole.setRows(5);
         txtConsole.setText(">");
         txtConsole.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 102, 102)));
+        txtConsole.setOpaque(false);
         console.setViewportView(txtConsole);
 
         getContentPane().add(console, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 450, 140));
-
-        PanelPBC.setBackground(new java.awt.Color(0, 0, 0));
 
         PBCTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -131,6 +136,7 @@ public class main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        PBCTable.setOpaque(false);
         PBCTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(PBCTable);
         if (PBCTable.getColumnModel().getColumnCount() > 0) {
@@ -169,7 +175,6 @@ public class main extends javax.swing.JFrame {
 
         getContentPane().add(PanelPBC, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 440, 230));
 
-        panelDisk.setBackground(new java.awt.Color(0, 0, 0));
         panelDisk.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
         jScrollPane3.setViewportView(diskList);
@@ -211,7 +216,7 @@ public class main extends javax.swing.JFrame {
         lblMemory.setText("Memory");
         getContentPane().add(lblMemory, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 20, 110, -1));
 
-        workTail1.setModel(new javax.swing.table.DefaultTableModel(
+        workQueue1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -230,17 +235,17 @@ public class main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        workTail1.getTableHeader().setReorderingAllowed(false);
-        panelWork1.setViewportView(workTail1);
-        if (workTail1.getColumnModel().getColumnCount() > 0) {
-            workTail1.getColumnModel().getColumn(0).setResizable(false);
-            workTail1.getColumnModel().getColumn(1).setResizable(false);
-            workTail1.getColumnModel().getColumn(2).setResizable(false);
+        workQueue1.getTableHeader().setReorderingAllowed(false);
+        panelWork1.setViewportView(workQueue1);
+        if (workQueue1.getColumnModel().getColumnCount() > 0) {
+            workQueue1.getColumnModel().getColumn(0).setResizable(false);
+            workQueue1.getColumnModel().getColumn(1).setResizable(false);
+            workQueue1.getColumnModel().getColumn(2).setResizable(false);
         }
 
         getContentPane().add(panelWork1, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 280, 270, 90));
 
-        workTail2.setModel(new javax.swing.table.DefaultTableModel(
+        workQueue.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -259,12 +264,12 @@ public class main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        workTail2.getTableHeader().setReorderingAllowed(false);
-        panelWork2.setViewportView(workTail2);
-        if (workTail2.getColumnModel().getColumnCount() > 0) {
-            workTail2.getColumnModel().getColumn(0).setResizable(false);
-            workTail2.getColumnModel().getColumn(1).setResizable(false);
-            workTail2.getColumnModel().getColumn(2).setResizable(false);
+        workQueue.getTableHeader().setReorderingAllowed(false);
+        panelWork2.setViewportView(workQueue);
+        if (workQueue.getColumnModel().getColumnCount() > 0) {
+            workQueue.getColumnModel().getColumn(0).setResizable(false);
+            workQueue.getColumnModel().getColumn(1).setResizable(false);
+            workQueue.getColumnModel().getColumn(2).setResizable(false);
         }
 
         getContentPane().add(panelWork2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 400, 270, 90));
@@ -407,9 +412,7 @@ public class main extends javax.swing.JFrame {
         });
         getContentPane().add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(1480, 480, -1, -1));
 
-        background.setBackground(new java.awt.Color(0, 0, 0));
         background.setForeground(new java.awt.Color(255, 255, 255));
-        background.setOpaque(true);
         getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-60, -90, 1680, 820));
 
         pack();
@@ -421,24 +424,6 @@ public class main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Select a file firts");
         }
         else{
-            //generando nueva tabla del BPC
-            /*
-            Object rowData[][] = { { "Row1-Column1", "Row1-Column2", "Row1-Column3", "Row1-Column4", "Row1-Column5"}};
-            Object columnNames[] = {"File","PC", "IR", "AC", "State" };
-            JTable table = new JTable(rowData, columnNames);
-
-            JScrollPane scrollPane = new JScrollPane(table);
-            scrollPane.setSize(452,404);
-            scrollPane.setLocation(0,30);
-            PanelBpc.add(scrollPane);
-            PanelBpc.setPreferredSize(new Dimension(450, panelSize));
-            PanelBpc.validate();
-            PanelBpc.repaint();
-            panellocationY+=160;
-            panelSize+=160;
-            jScrollPane1.revalidate();
-            */
-            
             String [][] none={};
             String titles[] = {"Number","File Name"};
             DefaultTableModel model = new DefaultTableModel(none,titles);
@@ -485,8 +470,6 @@ public class main extends javax.swing.JFrame {
 
     private void btnExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExecuteActionPerformed
         // TODO add your handling code here:
-         DefaultListModel<String> modelMemory = new DefaultListModel<>();
-            DefaultListModel<String> modelDisk = new DefaultListModel<>();
             int memoryCounter = 0;
             int diskCounter = 0;
             int selectedRow[] = fileTable.getSelectedRows();
@@ -495,23 +478,25 @@ public class main extends javax.swing.JFrame {
             }
             for (File file:fileList){
                 if (execute.contains(file.getName())){
-                    FileManager manager = new FileManager();
-                    ArrayList<String> instructions = manager.read(file.toPath());//lectura del archivo cargado
+                    FileManager manager = new FileManager(file.toPath(),0);
+                    ArrayList<String> instructions = manager.getInstructions();
                     for (String ins:instructions){
-                        if (memoryCounter < instructionList.size().height ){
+                        if (memoryCounter < memorySize ){
                             memoryCounter++;
-                            modelMemory.addElement( memoryCounter+ ". "+file.getName() + " " + ins);
+                            modelMemory.addElement( memoryCounter+ ". "+manager.getName() + " " + ins);
                             
                         }
                         else{
-                            modelDisk.addElement(file.getName() + " " + ins);
-                            memoryCounter++;
+                            diskCounter++;
+                            modelDisk.addElement(diskCounter +". "+ manager.getName() + " " + ins);
+                           
                         }
                     }
                 }
             }
             diskList.setModel(modelDisk);
             instructionList.setModel(modelMemory);
+            
     }//GEN-LAST:event_btnExecuteActionPerformed
 
     /**
@@ -545,6 +530,7 @@ public class main extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new main().setVisible(true);
+                
             }
         });
     }
@@ -581,7 +567,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JScrollPane panelWork2;
     private javax.swing.JTextArea txtConsole;
     private javax.swing.JTextField txtLoad;
-    private javax.swing.JTable workTail1;
-    private javax.swing.JTable workTail2;
+    private javax.swing.JTable workQueue;
+    private javax.swing.JTable workQueue1;
     // End of variables declaration//GEN-END:variables
 }

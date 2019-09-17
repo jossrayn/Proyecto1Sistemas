@@ -3,6 +3,7 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -52,8 +53,18 @@
       <SubComponents>
         <Component class="javax.swing.JTable" name="configTable">
           <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
+                </LineBorder>
+              </Border>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="2" rowCount="13">
+              <Table columnCount="2" rowCount="15">
                 <Column editable="false" title="Instruction Name" type="java.lang.Object">
                   <Data value="Load"/>
                   <Data value="Store"/>
@@ -62,7 +73,9 @@
                   <Data value="Sub"/>
                   <Data value="Inc"/>
                   <Data value="Dec"/>
-                  <Data value="Int"/>
+                  <Data value="Int 20H"/>
+                  <Data value="Int 16H"/>
+                  <Data value="Int 05H"/>
                   <Data value="Jum"/>
                   <Data value="Cmp"/>
                   <Data value="Je/Jne"/>
@@ -77,6 +90,8 @@
                   <Data value="3"/>
                   <Data value="1"/>
                   <Data value="1"/>
+                  <Data value="0"/>
+                  <Data value="0"/>
                   <Data value="0"/>
                   <Data value="2"/>
                   <Data value="2"/>
@@ -100,6 +115,7 @@
                 </Column>
               </TableColumnModel>
             </Property>
+            <Property name="opaque" type="boolean" value="false"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
             </Property>
@@ -155,13 +171,17 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnStart">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Start"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-            <EtchetBorder>
-              <Color PropertyName="highlight" blue="99" green="99" red="99" type="rgb"/>
-            </EtchetBorder>
+          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+            <BevelBorder bevelType="1"/>
           </Border>
+        </Property>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Hand Cursor"/>
         </Property>
       </Properties>
       <Events>
@@ -174,12 +194,6 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JLabel" name="background">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="0" type="rgb"/>
-        </Property>
-        <Property name="opaque" type="boolean" value="true"/>
-      </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="-2" y="-6" width="480" height="400"/>
