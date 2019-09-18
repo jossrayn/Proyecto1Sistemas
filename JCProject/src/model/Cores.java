@@ -13,18 +13,18 @@ import java.util.Queue;
  * @author rayn0
  */
 public class Cores {
-    private ArrayList<FileManager> files = new ArrayList<>();
+    private ArrayList<String> files = new ArrayList<>();
 
-    public ArrayList<FileManager> getFiles() {
+    public ArrayList<String> getFiles() {
         return files;
     }
 
-    public void addFiles(FileManager file) {
+    public void addFiles(String file) {
         this.files.add(file);
     }
     
     public void removeFiles(String file) {
-        for(FileManager element:files){
+        for(String element:files){
             if(element.equals(file)){
                 files.remove(element);
                 break;

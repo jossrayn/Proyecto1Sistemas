@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import model.Cores;
 import model.FileManager;
 import model.Instruction;
 
@@ -472,6 +473,8 @@ public class main extends javax.swing.JFrame {
         // TODO add your handling code here:
             int memoryCounter = 0;
             int diskCounter = 0;
+            Cores core1 = new Cores();
+            Cores core2 = new Cores();
             int selectedRow[] = fileTable.getSelectedRows();
             for(int name:selectedRow){
                 execute.add(fileTable.getModel().getValueAt(name,1).toString());
@@ -492,11 +495,21 @@ public class main extends javax.swing.JFrame {
                            
                         }
                     }
+                    
+                    if(manager.getCoreNumber() == 0){
+                        for (String instruction:manager.getInstructions()){
+                            core1.addFiles(instruction);
+                        }
+                    }
+                    else{
+                        for (String instruction:manager.getInstructions()){
+                            core2.addFiles(instruction);
+                        }
+                    }
                 }
             }
             diskList.setModel(modelDisk);
             instructionList.setModel(modelMemory);
-            
             
     }//GEN-LAST:event_btnExecuteActionPerformed
 

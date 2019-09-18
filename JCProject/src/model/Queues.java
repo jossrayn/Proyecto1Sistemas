@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class Queues {
     private ArrayList<String> instruccions = new ArrayList<>();
     private int number = 0;
-    private String state = "";
     
     public Queues(){
         
