@@ -478,10 +478,10 @@ public class main extends javax.swing.JFrame {
             }
             for (File file:fileList){
                 if (execute.contains(file.getName())){
-                    FileManager manager = new FileManager(file.toPath(),0);
+                    FileManager manager = new FileManager(file.toPath());
                     ArrayList<String> instructions = manager.getInstructions();
                     for (String ins:instructions){
-                        if (memoryCounter < memorySize ){
+                        if (memoryCounter < memorySize && manager.getInstructions().size() < memorySize){
                             memoryCounter++;
                             modelMemory.addElement( memoryCounter+ ". "+manager.getName() + " " + ins);
                             
@@ -496,6 +496,7 @@ public class main extends javax.swing.JFrame {
             }
             diskList.setModel(modelDisk);
             instructionList.setModel(modelMemory);
+            
             
     }//GEN-LAST:event_btnExecuteActionPerformed
 

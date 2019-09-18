@@ -19,7 +19,7 @@ public class controller {
     
     public int getCore(){
         Random randNumber = new Random();
-        int core= randNumber.nextInt(2);//generacion del numero random para el inicio en la seccion de memoria
+        int core = randNumber.nextInt(2);//generacion del numero random para el inicio en la seccion de memoria
         return core;
     }
 }

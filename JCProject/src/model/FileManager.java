@@ -27,11 +27,12 @@ public class FileManager {
     private String name = "";
     private int coreNumber = 0;
     private Path path;
+    private controller control = new controller();
 
-    public FileManager(Path path,int core){
+    public FileManager(Path path){
         this.name = path.getFileName().toString();
         this.path = path;
-        this.coreNumber = core;
+        this.coreNumber = control.getCore();
         read(this.path);
     }
 

@@ -13,46 +13,25 @@ import java.util.Queue;
  * @author rayn0
  */
 public class Cores {
-    private int number = 0;
-    private ArrayList<String> files = new ArrayList<>();
-    private Queue instructionList;
+    private ArrayList<FileManager> files = new ArrayList<>();
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public ArrayList<String> getFiles() {
+    public ArrayList<FileManager> getFiles() {
         return files;
     }
 
-    public void addFiles(String file) {
+    public void addFiles(FileManager file) {
         this.files.add(file);
     }
     
     public void removeFiles(String file) {
-        for(String element:files){
+        for(FileManager element:files){
             if(element.equals(file)){
                 files.remove(element);
                 break;
             }
         }
     }
-
-    public Queue getInstructionList() {
-        return instructionList;
-    }
-
-    public void setInstructionList(Queue instructionList) {
-        this.instructionList = instructionList;
-    }
     
-    public Cores(int num,String file,Queue queue){
-        this.number = num;
-        this.files.add(file);
-        this.instructionList = queue;
+    public Cores(){
     }
 }
