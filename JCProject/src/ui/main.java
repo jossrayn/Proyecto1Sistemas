@@ -495,7 +495,7 @@ public class main extends javax.swing.JFrame {
                            
                         }
                     }
-                    
+                    //diviviendo set de instrucciones por nucleo
                     if(manager.getCoreNumber() == 0){
                         for (String instruction:manager.getInstructions()){
                             core1.addFiles(instruction);
