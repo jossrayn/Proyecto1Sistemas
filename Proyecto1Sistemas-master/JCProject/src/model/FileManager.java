@@ -34,7 +34,7 @@ public class FileManager {
         this.path = path;
         
         //comentar
-        this.coreNumber = 0;
+        this.coreNumber = 1;
         
 
 

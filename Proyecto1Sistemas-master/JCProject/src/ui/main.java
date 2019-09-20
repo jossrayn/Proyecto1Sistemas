@@ -535,14 +535,22 @@ public static <T> ArrayList<T> merge(Collection<T> a, Collection<T> b) {
             DefaultTableModel modelCore1 = new DefaultTableModel(new String[] {"Instruction", "Value","File"}, 0);
             DefaultTableModel modelCore2 = new DefaultTableModel(new String[] {"Instruction", "Value","File"}, 0);
             System.out.println("Core 1");
-            if(core1.size() > 1){
-                for(int i = 0; i < core1.size(); i++){
-                    ArrayList<String> temp = new ArrayList<>();
-                    for(String obj: core1.get(i).getInstructions()){
-                        temp.add(obj+"="+core1.get(i).getName());
-                    }
-                    core1instruc.add(temp);
+            
+            for(int i = 0; i < core1.size(); i++){
+                ArrayList<String> temp = new ArrayList<>();
+                for(String obj: core1.get(i).getInstructions()){
+                    temp.add(obj+"="+core1.get(i).getName());
                 }
+                core1instruc.add(temp);
+            }
+            for(int i = 0; i < core2.size(); i++){
+                ArrayList<String> temp = new ArrayList<>();
+                for(String obj: core2.get(i).getInstructions()){
+                    temp.add(obj+"="+core2.get(i).getName());
+                }
+                core2instruc.add(temp);
+            }            
+            if(core1.size() > 1){
                 Collections.sort(core1instruc, new Comparator<ArrayList<String>>() {    
                     @Override
                     public int compare(ArrayList<String> o1, ArrayList<String> o2) {
@@ -582,13 +590,7 @@ public static <T> ArrayList<T> merge(Collection<T> a, Collection<T> b) {
             System.out.println();
             System.out.println("Core 2");
             if(core2.size() > 1){
-                for(int i = 0; i < core2.size(); i++){
-                    ArrayList<String> temp = new ArrayList<>();
-                    for(String obj: core2.get(i).getInstructions()){
-                        temp.add(obj+"|"+core2.get(i).getName());
-                    }
-                    core2instruc.add(temp);
-                }
+                System.out.println("Linea 1");
                 Collections.sort(core2instruc, new Comparator<ArrayList<String>>() {    
                     @Override
                     public int compare(ArrayList<String> o1, ArrayList<String> o2) {
@@ -597,6 +599,7 @@ public static <T> ArrayList<T> merge(Collection<T> a, Collection<T> b) {
                 });
             ArrayList<ArrayList<String>> core2merge = new ArrayList<>();
             int cont1 = 0;
+            System.out.println("Linea 2");
             while(cont1 < core2instruc.get(0).size()){
                 ArrayList<String> temp = new ArrayList<>();
               for(ArrayList<String> obj :core2instruc ){
@@ -609,15 +612,17 @@ public static <T> ArrayList<T> merge(Collection<T> a, Collection<T> b) {
               core2merge.add(temp);
               cont1++;
             }
-            
+            System.out.println("Linea 3");
             for(ArrayList<String> obj: core2merge){
                 core2final.addAll(obj);
             }
-            for(String obj: core2final){
+            System.out.println(core2final);
+            System.out.println("Linea 4");
+            core2final.forEach((obj) -> {
                 String[] out = obj.split("=");
                 modelCore2.addRow(new Object[]{out[0],out[1]});
-            
-            }
+                });
+            System.out.println("Linea 5");
             workQueue.setModel(modelCore2);
             }
 
